@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-navigation-drawer v-model="drawer" fixed app>
+    <v-navigation-drawer v-model="drawer" temporary app>
       <v-list dense>
       <v-list-tile @click="clickHome">
           <v-list-tile-action>
