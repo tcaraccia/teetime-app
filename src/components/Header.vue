@@ -23,6 +23,33 @@
     <v-toolbar color="green" dark fixed app>
         <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
         <v-toolbar-title @click="clickHome" >Teetimes {{this.$route.meta.title}}</v-toolbar-title>
+          <v-menu
+            ref="date"
+            :close-on-content-click="true"
+            v-model="date"
+            :nudge-right="40"
+            :return-value.sync="tempDate"
+            lazy
+            transition="scale-transition"
+            offset-y
+            min-width="290px"
+            class="mx-auto"
+          >
+            <v-text-field
+              slot="activator"
+              v-model="tempDate"
+              prepend-icon="event"
+              readonly
+              color="white"
+            ></v-text-field>
+            <v-date-picker 
+              color="green"
+              header-color="green" 
+              v-model="tempDate" 
+              @input="$refs.date.save(tempDate)">
+            </v-date-picker>
+
+          </v-menu>
     </v-toolbar>
   </div>
 </template>
@@ -30,7 +57,9 @@
 <script>
 export default {
   data: () => ({
-    drawer: null
+    drawer: null,
+    tempDate: null,
+    date: null
   }),
   methods: {
     clickHome () {
