@@ -8,7 +8,17 @@ import moment from 'moment'
 
 import 'vuetify/dist/vuetify.min.css'
 
-Vue.use(Vuetify)
+Vue.use(Vuetify, {
+  theme: {
+    primary: '#4CAF50',
+    secondary: '#81C784',
+    accent: '#FFD600',
+    error: '#f44336',
+    warning: '#ffeb3b',
+    info: '#2196f3',
+    success: '#64DD17'
+  }
+})
 
 Vue.config.productionTip = false
 Vue.prototype.moment = moment

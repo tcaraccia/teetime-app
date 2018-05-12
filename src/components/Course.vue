@@ -23,20 +23,19 @@
         walk! You're going to do his laundry? I've got to find a way to escape.
         </v-card-text>
     </v-slide-y-transition>
-    <v-dialog v-model="teetimesDialog" v-bind="card" max-width="500px">
-        <v-card>
-          <v-card-title v-text="card.title"> </v-card-title>
-          <v-card-actions>
-            <v-btn color="green" flat @click.stop="teetimesDialog=false">Close</v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
-    </v-card>
+    <v-dialog v-model="teetimesDialog" v-bind="card" max-width="800px">
+      <teetimes v-bind:card="card"></teetimes>
+    </v-dialog>
+  </v-card>
     
 </template>
 
 <script>
+import Teetimes from './Teetimes'
 export default {
+  components: {
+    'teetimes': Teetimes
+  },
   data () {
     return {
       teetimesDialog: false
