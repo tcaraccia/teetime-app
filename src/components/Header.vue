@@ -76,7 +76,7 @@ export default {
   },
   methods: {
     clickHome () {
-      this.$router.push({name: 'Courses'})
+      this.$router.push({name: 'CourseList'})
     },
     clickTeeTimes (_id) {
       this.$router.push({name: 'coursett', params: { id: _id }})

@@ -8,57 +8,87 @@
   >
     <v-progress-linear slot="progress" color="green" indeterminate></v-progress-linear>
     <template slot="items" slot-scope="props">
-      <td>{{ props.item.time }}</td>
-      <td>$ {{ props.item.fee }}</td>
-
-      <td class="text-xs-center" v-bind:class="{free: props.item.player1 === 'Disponible'}">
+      <td class="body-2">{{ props.item.time }}</td>
+      <td class="body-2">$ {{ props.item.fee }}</td>
+      <td class="text-xs-center">
         <v-edit-dialog :return-value.sync="props.item.player1" lazy>
-          <div> {{ props.item.player1 }}</div>
+          <v-chip v-if="props.item.player1" class="body-2" v-bind="playerChip(props.item.player1)" >
+            <v-avatar size="20px" v-bind="playerAvatar(props.item.player1)">{{ props.item.player1.handicap}}</v-avatar>
+            {{ props.item.player1.alias }}
+          </v-chip >
+          <div v-else>
+            <div class="green--text">Disponible</div>
+          </div>
           <v-text-field
           slot="input"
           v-model="props.item.player1"
-          label="Edit"
+          label="Nro Matricula"
           single-line
-          counter
+          lazy
+          persistent
           >
           </v-text-field>
         </v-edit-dialog>
       </td>
       <td class="text-xs-center">
-        <v-edit-dialog  :return-value.sync="props.item.player2" lazy>
-          <div> {{ props.item.player2 }}</div>
+        <v-edit-dialog :return-value.sync="props.item.player2" lazy>
+          <v-chip v-if="props.item.player2" class="body-2" v-bind="playerChip(props.item.player2)">
+            <v-avatar size="20px" v-bind="playerAvatar(props.item.player2)">{{ props.item.player2.handicap}}</v-avatar>
+            {{ props.item.player2.alias }}
+          </v-chip >
+          <div v-else>
+            <div class="green--text">Disponible</div>
+          </div>
           <v-text-field
           slot="input"
           v-model="props.item.player2"
-          label="Edit"
+          label="Nro Matricula"
           single-line
-          counter
+          lazy
+          persistent
           >
           </v-text-field>
         </v-edit-dialog>
       </td>
       <td class="text-xs-center">
-        <v-edit-dialog :return-value.sync="props.item.player3" lazy>
-          <div> {{ props.item.player3 }}</div>
+        <v-edit-dialog 
+        :return-value.sync="props.item.player3"
+          large
+          persistent
+          lazy
+        >
+          <v-chip v-if="props.item.player3" class="body-2" v-bind="playerChip(props.item.player3)">
+            <v-avatar size="20px" v-bind="playerAvatar(props.item.player3)">{{ props.item.player3.handicap}}</v-avatar>
+            {{ props.item.player4.alias }}
+          </v-chip >
+          <div v-else>
+            <div class="green--text">Disponible</div>
+          </div>
           <v-text-field
           slot="input"
           v-model="props.item.player3"
-          label="Edit"
-          single-line
-          counter
+          label="Nro Matricula"
           >
           </v-text-field>
         </v-edit-dialog>
       </td>
       <td  class="text-xs-center">
         <v-edit-dialog :return-value.sync="props.item.player4" lazy>
-          <div> {{ props.item.player4 }}</div>
+          
+          <v-chip v-if="props.item.player4" class="body-2" v-bind="playerChip(props.item.player4)">
+            <v-avatar size="20px" v-bind="playerAvatar(props.item.player4)">{{ props.item.player4.handicap}}</v-avatar>
+            {{ props.item.player4.alias }}
+          </v-chip >
+          <div v-else>
+            <div class="green--text">Disponible</div>
+          </div>
+
           <v-text-field
           slot="input"
           v-model="props.item.player4"
-          label="Edit"
+          label="Nro Matricula"
           single-line
-          counter
+          autofocus
           >
           </v-text-field>
         </v-edit-dialog>
@@ -88,17 +118,12 @@
         player1: {
           fullname: 'Tomas Caraccia'
         },
-        player2: 0,
-        player3: 0,
-        player4: 0
+        player2: 'Disponible',
+        player3: 'Disponible'
       },
       defaultItem: {
         time: '9:00',
-        fee: 350,
-        player1: 0,
-        player2: 0,
-        player3: 0,
-        player4: 0
+        fee: 350
       }
     }),
     computed: {
@@ -123,26 +148,75 @@
         this.teetimes = [
           {
             time: '8:00',
-            fee: '350',
-            player1: 97577,
-            player2: 36342,
-            player3: 12391,
-            player4: 0
+            fee: 500,
+            player4: {
+              alias: 'Leticia D',
+              enrolment: '97577',
+              gender: 'F',
+              handicap: 28
+            },
+            player2: {
+              alias: 'Tomas C',
+              enrolment: '97577',
+              gender: 'M',
+              handicap: 25
+            }
           },
           {
             time: '8:30',
-            fee: '400',
-            player1: 'Disponible',
-            player2: 0,
-            player3: 0,
-            player4: 0
+            fee: 500
           },
           {
             time: '9:00',
-            player1: 0,
-            player2: 0,
-            player3: 0,
-            player4: 0
+            fee: 600
+          },
+          {
+            time: '9:30',
+            fee: 600
+          },
+          {
+            time: '10:00',
+            fee: 600
+          },
+          {
+            time: '10:30',
+            fee: 600
+          },
+          {
+            time: '11:00',
+            fee: 600
+          },
+          {
+            time: '11:30',
+            fee: 600
+          },
+          {
+            time: '12:00',
+            fee: 600
+          },
+          {
+            time: '12:30',
+            fee: 600
+          },
+          {
+            time: '13:00',
+            fee: 600
+          },
+          {
+            time: '13:30',
+            fee: 600
+          },
+          {
+            time: '14:00',
+            fee: 600
+          },
+          {
+            time: '14:30',
+            fee: 600
+          },
+          {
+            time: '15:00',
+            fee: 600
           }
         ]
       },
@@ -169,12 +243,20 @@
           this.desserts.push(this.editedItem)
         }
         this.close()
+      },
+      playerAvatar: (player) => {
+        return {
+          'color': (player.gender === 'M') ? 'blue lighten-2' : 'pink lighten-2'
+        }
+      },
+      playerChip: (player) => {
+        return {
+          'color': (player.gender === 'M') ? 'blue lighten-3' : 'pink lighten-3',
+          'text-color': 'white'
+        }
       }
     }
   }
 </script>
 <style scoped>
-.free {
-  background-color: lightgreen;
-}
 </style>

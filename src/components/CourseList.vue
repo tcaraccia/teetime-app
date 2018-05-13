@@ -16,11 +16,11 @@
 </template>
 
 <script>
-  import Course from './Course.vue'
+  import CourseItem from './CourseItem.vue'
 
   export default {
     components: {
-      'course': Course
+      'course': CourseItem
     },
     data: () => ({
       ttDialog: false,

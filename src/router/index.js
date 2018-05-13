@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Courses from '@/components/Courses'
+import CourseList from '@/components/CourseList'
 import Teetimes from '@/components/Teetimes'
 
 Vue.use(Router)
@@ -9,10 +9,10 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'Courses',
-      component: Courses,
+      name: 'CourseList',
+      component: CourseList,
       props: {
-        bread: 'Courses'
+        bread: 'CourseList'
       }
     },
     {
