@@ -11,7 +11,12 @@
       <td class="body-2">{{ props.item.time }}</td>
       <td class="body-2">$ {{ props.item.fee }}</td>
       <td class="text-xs-center">
-        <v-edit-dialog :return-value.sync="props.item.player1" lazy>
+        <v-edit-dialog 
+        :return-value.sync="props.item.player1.enrolment" 
+        large
+        persistent
+        lazy
+        >
           <v-chip v-if="props.item.player1" class="body-2" v-bind="playerChip(props.item.player1)" >
             <v-avatar size="20px" v-bind="playerAvatar(props.item.player1)">{{ props.item.player1.handicap}}</v-avatar>
             {{ props.item.player1.alias }}
@@ -24,14 +29,18 @@
           v-model="props.item.player1"
           label="Nro Matricula"
           single-line
-          lazy
-          persistent
+          autofocus
           >
           </v-text-field>
         </v-edit-dialog>
       </td>
       <td class="text-xs-center">
-        <v-edit-dialog :return-value.sync="props.item.player2" lazy>
+        <v-edit-dialog 
+        :return-value.sync="props.item.player2" 
+        large
+        persistent
+        lazy
+        >
           <v-chip v-if="props.item.player2" class="body-2" v-bind="playerChip(props.item.player2)">
             <v-avatar size="20px" v-bind="playerAvatar(props.item.player2)">{{ props.item.player2.handicap}}</v-avatar>
             {{ props.item.player2.alias }}
@@ -44,8 +53,7 @@
           v-model="props.item.player2"
           label="Nro Matricula"
           single-line
-          lazy
-          persistent
+          autofocus
           >
           </v-text-field>
         </v-edit-dialog>
@@ -68,12 +76,20 @@
           slot="input"
           v-model="props.item.player3"
           label="Nro Matricula"
+          single-line
+          autofocus
           >
           </v-text-field>
         </v-edit-dialog>
       </td>
       <td  class="text-xs-center">
-        <v-edit-dialog :return-value.sync="props.item.player4" lazy>
+        <v-edit-dialog 
+        :return-value.sync="props.item.player4" 
+        large
+        persistent
+        lazy
+        > 
+        
           
           <v-chip v-if="props.item.player4" class="body-2" v-bind="playerChip(props.item.player4)">
             <v-avatar size="20px" v-bind="playerAvatar(props.item.player4)">{{ props.item.player4.handicap}}</v-avatar>
@@ -116,14 +132,45 @@
       editedItem: {
         name: '',
         player1: {
-          fullname: 'Tomas Caraccia'
+          fullname: 'Tomas Caraccia',
+          enrolment: ''
         },
-        player2: 'Disponible',
-        player3: 'Disponible'
+        player2: {
+          fullname: 'Tomas Caraccia',
+          enrolment: ''
+        },
+        player3: {
+          fullname: 'Tomas Caraccia',
+          enrolment: ''
+        },
+        player4: {
+          fullname: 'Tomas Caraccia',
+          enrolment: ''
+        }
       },
       defaultItem: {
         time: '9:00',
-        fee: 350
+        fee: 350,
+        player1: {
+          enrolment: 999999,
+          fullname: 'Default',
+          gender: 'M'
+        },
+        player2: {
+          enrolment: 999999,
+          fullname: 'Default',
+          gender: 'M'
+        },
+        player3: {
+          enrolment: 999999,
+          fullname: 'Default',
+          gender: 'M'
+        },
+        player4: {
+          enrolment: 999999,
+          fullname: 'Default',
+          gender: 'M'
+        }
       }
     }),
     computed: {
