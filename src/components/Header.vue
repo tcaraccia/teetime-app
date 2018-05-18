@@ -64,6 +64,9 @@ export default {
     dateFormatted: null,
     date: null
   }),
+  created () {
+    this.date = new Date()
+  },
   computed: {
     computedDateFormatted () {
       return this.formatDate(this.date)

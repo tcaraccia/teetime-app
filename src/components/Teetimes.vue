@@ -12,7 +12,7 @@
       <td class="body-2">$ {{ props.item.fee }}</td>
       <td class="text-xs-center">
         <v-edit-dialog 
-        :return-value.sync="props.item.player1.enrolment" 
+        :return-value.sync="props.item.player1" 
         large
         persistent
         lazy

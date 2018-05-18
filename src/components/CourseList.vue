@@ -24,8 +24,7 @@
       'course': CourseItem
     },
     data: () => ({
-      ttDialog: false,
-      date: new Date()
+      ttDialog: false
     }),
     computed: mapGetters({
       results: 'allCourses'
