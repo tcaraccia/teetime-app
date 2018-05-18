@@ -5,19 +5,12 @@ import App from './App'
 import router from './router'
 import Vuetify from 'vuetify'
 import moment from 'moment'
-
+import theme from './theme'
+import store from './store'
 import 'vuetify/dist/vuetify.min.css'
 
 Vue.use(Vuetify, {
-  theme: {
-    primary: '#4CAF50',
-    secondary: '#81C784',
-    accent: '#FFD600',
-    error: '#f44336',
-    warning: '#ffeb3b',
-    info: '#2196f3',
-    success: '#64DD17'
-  }
+  theme: theme
 })
 
 Vue.config.productionTip = false
@@ -27,6 +20,7 @@ Vue.prototype.moment = moment
 new Vue({
   el: '#app',
   router,
+  store,
   components: { App },
   template: '<App/>'
 })
