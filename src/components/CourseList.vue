@@ -23,9 +23,6 @@
     components: {
       'course': CourseItem
     },
-    data: () => ({
-      ttDialog: false
-    }),
     computed: mapGetters({
       results: 'allCourses'
     }),
