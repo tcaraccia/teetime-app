@@ -1,102 +1,183 @@
 <template>
-  <div>
-    <v-dialog v-model="dialog" max-width="500px">
-      <v-btn slot="activator" color="primary" dark class="mb-2">New Item</v-btn>
-      <v-card>
-        <v-card-title>
-          <span class="headline">{{ formTitle }}</span>
-        </v-card-title>
-        <v-card-text>
-          <v-container grid-list-md>
-            <v-layout wrap>
-              <v-flex xs12 sm6 md4>
-                <v-text-field v-model="editedItem.name" label="Dessert name"></v-text-field>
-              </v-flex>
-              <v-flex xs12 sm6 md4>
-                <v-text-field v-model="editedItem.calories" label="Calories"></v-text-field>
-              </v-flex>
-              <v-flex xs12 sm6 md4>
-                <v-text-field v-model="editedItem.fat" label="Fat (g)"></v-text-field>
-              </v-flex>
-              <v-flex xs12 sm6 md4>
-                <v-text-field v-model="editedItem.carbs" label="Carbs (g)"></v-text-field>
-              </v-flex>
-              <v-flex xs12 sm6 md4>
-                <v-text-field v-model="editedItem.protein" label="Protein (g)"></v-text-field>
-              </v-flex>
-            </v-layout>
-          </v-container>
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="blue darken-1" flat @click.native="close">Cancel</v-btn>
-          <v-btn color="blue darken-1" flat @click.native="save">Save</v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
-    <v-data-table
-      :headers="headers"
-      :items="desserts"
-      hide-actions
-      class="elevation-1"
-    >
-      <template slot="items" slot-scope="props">
-        <td>{{ props.item.name }}</td>
-        <td class="text-xs-right">{{ props.item.calories }}</td>
-        <td class="text-xs-right">{{ props.item.fat }}</td>
-        <td class="text-xs-right">{{ props.item.carbs }}</td>
-        <td class="text-xs-right">{{ props.item.protein }}</td>
-        <td class="justify-center layout px-0">
-          <v-btn icon class="mx-0" @click="editItem(props.item)">
-            <v-icon color="teal">edit</v-icon>
-          </v-btn>
-          <v-btn icon class="mx-0" @click="deleteItem(props.item)">
-            <v-icon color="pink">delete</v-icon>
-          </v-btn>
-        </td>
-      </template>
-      <template slot="no-data">
-        <v-btn color="primary" @click="initialize">Reset</v-btn>
-      </template>
-    </v-data-table>
-  </div>
+  <v-data-table
+    :headers="headers"
+    :items="teetimes"
+    :loading="true"
+    hide-actions
+    class="text-xs-left elevation-1"
+  >
+    <v-progress-linear slot="progress" color="green" indeterminate></v-progress-linear>
+    <template slot="items" slot-scope="props">
+      <td class="body-2">{{ props.item.time }}</td>
+      <td class="body-2">$ {{ props.item.fee }}</td>
+      <td class="text-xs-center">
+        <v-edit-dialog 
+        :return-value.sync="props.item.player1" 
+        large
+        persistent
+        lazy
+        >
+          <v-chip v-if="props.item.player1" class="body-2" v-bind="playerChip(props.item.player1)" >
+            <v-avatar size="20px" v-bind="playerAvatar(props.item.player1)">{{ props.item.player1.handicap}}</v-avatar>
+            {{ props.item.player1.alias }}
+          </v-chip >
+          <div v-else>
+            <div class="green--text">Disponible</div>
+          </div>
+          <v-text-field
+          slot="input"
+          v-model="props.item.player1"
+          label="Nro Matricula"
+          single-line
+          autofocus
+          >
+          </v-text-field>
+        </v-edit-dialog>
+      </td>
+      <td class="text-xs-center">
+        <v-edit-dialog 
+        :return-value.sync="props.item.player2" 
+        large
+        persistent
+        lazy
+        >
+          <v-chip v-if="props.item.player2" class="body-2" v-bind="playerChip(props.item.player2)">
+            <v-avatar size="20px" v-bind="playerAvatar(props.item.player2)">{{ props.item.player2.handicap}}</v-avatar>
+            {{ props.item.player2.alias }}
+          </v-chip >
+          <div v-else>
+            <div class="green--text">Disponible</div>
+          </div>
+          <v-text-field
+          slot="input"
+          v-model="props.item.player2"
+          label="Nro Matricula"
+          single-line
+          autofocus
+          >
+          </v-text-field>
+        </v-edit-dialog>
+      </td>
+      <td class="text-xs-center">
+        <v-edit-dialog 
+        :return-value.sync="props.item.player3"
+          large
+          persistent
+          lazy
+        >
+          <v-chip v-if="props.item.player3" class="body-2" v-bind="playerChip(props.item.player3)">
+            <v-avatar size="20px" v-bind="playerAvatar(props.item.player3)">{{ props.item.player3.handicap}}</v-avatar>
+            {{ props.item.player4.alias }}
+          </v-chip >
+          <div v-else>
+            <div class="green--text">Disponible</div>
+          </div>
+          <v-text-field
+          slot="input"
+          v-model="props.item.player3"
+          label="Nro Matricula"
+          single-line
+          autofocus
+          >
+          </v-text-field>
+        </v-edit-dialog>
+      </td>
+      <td  class="text-xs-center">
+        <v-edit-dialog 
+        :return-value.sync="props.item.player4" 
+        large
+        persistent
+        lazy
+        > 
+        
+          
+          <v-chip v-if="props.item.player4" class="body-2" v-bind="playerChip(props.item.player4)">
+            <v-avatar size="20px" v-bind="playerAvatar(props.item.player4)">{{ props.item.player4.handicap}}</v-avatar>
+            {{ props.item.player4.alias }}
+          </v-chip >
+          <div v-else>
+            <div class="green--text">Disponible</div>
+          </div>
+
+          <v-text-field
+          slot="input"
+          v-model="props.item.player4"
+          label="Nro Matricula"
+          single-line
+          autofocus
+          >
+          </v-text-field>
+        </v-edit-dialog>
+      </td>
+    </template>
+  </v-data-table>
 </template>
 
 <script>
   export default {
+    props: ['card'],
     data: () => ({
-      dialog: false,
+      free: false,
       headers: [
-        {
-          text: 'Dessert (100g serving)',
-          align: 'left',
-          sortable: false,
-          value: 'name'
-        },
-        { text: 'Calories', value: 'calories' },
-        { text: 'Fat (g)', value: 'fat' },
-        { text: 'Carbs (g)', value: 'carbs' },
-        { text: 'Protein (g)', value: 'protein' },
-        { text: 'Actions', value: 'name', sortable: false }
+        { text: 'Hora', value: 'time' },
+        { text: 'Fee', value: 'fee', sortable: true, align: 'left' },
+        { text: 'Jugador 1', value: 'player1', sortable: false, align: 'center' },
+        { text: 'Jugador 2', value: 'player2', sortable: false, align: 'center' },
+        { text: 'Jugador 3', value: 'player3', sortable: false, align: 'center' },
+        { text: 'Jugador 4', value: 'player4', sortable: false, align: 'center' }
+
       ],
-      desserts: [],
+      teetimes: [],
       editedIndex: -1,
       editedItem: {
         name: '',
-        calories: 0,
-        fat: 0,
-        carbs: 0,
-        protein: 0
+        player1: {
+          fullname: 'Tomas Caraccia',
+          enrolment: ''
+        },
+        player2: {
+          fullname: 'Tomas Caraccia',
+          enrolment: ''
+        },
+        player3: {
+          fullname: 'Tomas Caraccia',
+          enrolment: ''
+        },
+        player4: {
+          fullname: 'Tomas Caraccia',
+          enrolment: ''
+        }
       },
       defaultItem: {
-        name: '',
-        calories: 0,
-        fat: 0,
-        carbs: 0,
-        protein: 0
+        time: '9:00',
+        fee: 350,
+        player1: {
+          enrolment: 999999,
+          fullname: 'Default',
+          gender: 'M'
+        },
+        player2: {
+          enrolment: 999999,
+          fullname: 'Default',
+          gender: 'M'
+        },
+        player3: {
+          enrolment: 999999,
+          fullname: 'Default',
+          gender: 'M'
+        },
+        player4: {
+          enrolment: 999999,
+          fullname: 'Default',
+          gender: 'M'
+        }
       }
     }),
     computed: {
+      checkSlot () {
+        console.log(this)
+        return true
+      },
       formTitle () {
         return this.editedIndex === -1 ? 'New Item' : 'Edit Item'
       }
@@ -111,81 +192,83 @@
     },
     methods: {
       initialize () {
-        this.desserts = [
+        this.teetimes = [
           {
-            name: 'Frozen Yogurt',
-            calories: 159,
-            fat: 6.0,
-            carbs: 24,
-            protein: 4.0
+            time: '8:00',
+            fee: 500,
+            player4: {
+              alias: 'Leticia D',
+              enrolment: '97577',
+              gender: 'F',
+              handicap: 28
+            },
+            player2: {
+              alias: 'Tomas C',
+              enrolment: '97577',
+              gender: 'M',
+              handicap: 25
+            }
           },
           {
-            name: 'Ice cream sandwich',
-            calories: 237,
-            fat: 9.0,
-            carbs: 37,
-            protein: 4.3
+            time: '8:30',
+            fee: 500
           },
           {
-            name: 'Eclair',
-            calories: 262,
-            fat: 16.0,
-            carbs: 23,
-            protein: 6.0
+            time: '9:00',
+            fee: 600
           },
           {
-            name: 'Cupcake',
-            calories: 305,
-            fat: 3.7,
-            carbs: 67,
-            protein: 4.3
+            time: '9:30',
+            fee: 600
           },
           {
-            name: 'Gingerbread',
-            calories: 356,
-            fat: 16.0,
-            carbs: 49,
-            protein: 3.9
+            time: '10:00',
+            fee: 600
           },
           {
-            name: 'Jelly bean',
-            calories: 375,
-            fat: 0.0,
-            carbs: 94,
-            protein: 0.0
+            time: '10:30',
+            fee: 600
           },
           {
-            name: 'Lollipop',
-            calories: 392,
-            fat: 0.2,
-            carbs: 98,
-            protein: 0
+            time: '11:00',
+            fee: 600
           },
           {
-            name: 'Honeycomb',
-            calories: 408,
-            fat: 3.2,
-            carbs: 87,
-            protein: 6.5
+            time: '11:30',
+            fee: 600
           },
           {
-            name: 'Donut',
-            calories: 452,
-            fat: 25.0,
-            carbs: 51,
-            protein: 4.9
+            time: '12:00',
+            fee: 600
           },
           {
-            name: 'KitKat',
-            calories: 518,
-            fat: 26.0,
-            carbs: 65,
-            protein: 7
+            time: '12:30',
+            fee: 600
+          },
+          {
+            time: '13:00',
+            fee: 600
+          },
+          {
+            time: '13:30',
+            fee: 600
+          },
+          {
+            time: '14:00',
+            fee: 600
+          },
+          {
+            time: '14:30',
+            fee: 600
+          },
+          {
+            time: '15:00',
+            fee: 600
           }
         ]
       },
       editItem (item) {
-        this.editedIndex = this.desserts.indexOf(item)
+        this.editedIndex = this.teetimes.indexOf(item)
         this.editedItem = Object.assign({}, item)
         this.dialog = true
       },
@@ -207,7 +290,20 @@
           this.desserts.push(this.editedItem)
         }
         this.close()
+      },
+      playerAvatar: (player) => {
+        return {
+          'color': (player.gender === 'M') ? 'blue lighten-2' : 'pink lighten-2'
+        }
+      },
+      playerChip: (player) => {
+        return {
+          'color': (player.gender === 'M') ? 'blue lighten-3' : 'pink lighten-3',
+          'text-color': 'white'
+        }
       }
     }
   }
 </script>
+<style scoped>
+</style>

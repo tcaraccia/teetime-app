@@ -1,17 +1,19 @@
 <template>
-  <v-app id="inspire">
-    <topbar></topbar>
-    <v-content>
-      <v-container fluid fill-height>
-        <transition name="fade-transition" mode="out-in">
-          <router-view></router-view>
-        </transition>
-      </v-container>
-    </v-content>
-    <v-footer color="green" app>
-      <span class="white--text">&copy;2018</span>
-    </v-footer>
-  </v-app>
+  <transition name="fade-transition" mode="out-in">
+    <v-app id="inspire">
+      <topbar></topbar>
+      <v-content>
+        <v-container fluid fill-height>
+          <transition name="fade-transition" mode="out-in">
+            <router-view></router-view>
+          </transition>
+        </v-container>
+      </v-content>
+      <v-footer color="green" app>
+        <span class="white--text">&copy;2018</span>
+      </v-footer>
+    </v-app>
+  </transition>
 </template>
 
 <script>

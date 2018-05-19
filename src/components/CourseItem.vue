@@ -8,10 +8,10 @@
         </div>
     </v-card-title>
     <v-card-text>
-        <span class="grey--text">5 lugares disponibles</span>
+        <span class="grey--text">{{card.available}} lugares disponibles</span>
     </v-card-text>
     <v-card-actions>
-        <v-btn flat color="green" @click="clickTeeTimes(card)"> Teetimes</v-btn>
+        <v-btn flat color="green"  @click.stop="teetimesDialog = !teetimesDialog"> Teetimes</v-btn>
         <v-spacer></v-spacer>
         <v-btn icon @click.native="switchDetail(card)">
         <v-icon>{{ card.showDetail ? 'keyboard_arrow_down' : 'keyboard_arrow_up' }}</v-icon>
@@ -23,11 +23,24 @@
         walk! You're going to do his laundry? I've got to find a way to escape.
         </v-card-text>
     </v-slide-y-transition>
-    </v-card>
+    <v-dialog v-model="teetimesDialog" v-bind="card" max-width="800px">
+      <teetimes v-bind:card="card"></teetimes>
+    </v-dialog>
+  </v-card>
+    
 </template>
 
 <script>
+import Teetimes from './Teetimes'
 export default {
+  components: {
+    'teetimes': Teetimes
+  },
+  data () {
+    return {
+      teetimesDialog: false
+    }
+  },
   props: ['card'],
   methods: {
     switchDetail (card) {
