@@ -186,6 +186,6 @@ const courses = [
 
 export default {
   getAllCourses (cb) {
-    setTimeout(() => cb(courses), 100)
+    setTimeout(() => cb(courses), 5000)
   }
 }

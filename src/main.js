@@ -22,5 +22,8 @@ new Vue({
   router,
   store,
   components: { App },
-  template: '<App/>'
+  template: '<App/>',
+  beforeMount: function () {
+    this.$store.dispatch('getCourses')
+  }
 })

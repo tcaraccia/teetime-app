@@ -19,7 +19,7 @@
         >
           <v-chip v-if="props.item.player1" class="body-2" v-bind="playerChip(props.item.player1)" >
             <v-avatar size="20px" v-bind="playerAvatar(props.item.player1)">{{ props.item.player1.handicap}}</v-avatar>
-            {{ props.item.player1.alias }}
+            {{ props.item.player1.alias || null }}
           </v-chip >
           <div v-else>
             <div class="green--text">Disponible</div>

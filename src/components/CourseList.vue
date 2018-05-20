@@ -1,7 +1,10 @@
-
 <template>
   <v-container fluid grid-list-md>
-    <div v-for="result in results" :key="result.date.toString()">
+    <div v-if="loading">
+       <h1 class="grey--text pt-4 pb-4 display-2 text-xs-center" flat>Cargando Canchas </h1>
+      <v-progress-linear slot="progress" color="green" indeterminate></v-progress-linear>
+    </div>
+    <div v-for="result in courses" :key="result.date.toString()">
       <h1 class="grey--text pt-4 pb-4 display-2 text-xs-center" flat color="green" v-text="moment(result.date).locale('es').format('dddd DD [de] MMMM')" ></h1>
       <v-divider class="mb-3"></v-divider>
       <v-slide-y-transition mode="out-in">
@@ -23,11 +26,26 @@
     components: {
       'course': CourseItem
     },
-    computed: mapGetters({
-      results: 'allCourses'
-    }),
-    created () {
-      this.$store.dispatch('getAllCourses')
+    computed: {
+      success: {
+        get: function () {
+          return this.$store.state.status.success
+        },
+        set: function (value) {
+          this.$store.dispatch('clearError')
+        }
+      },
+      error: {
+        get: function () {
+          return this.$store.state.status.error
+        },
+        set: function (value) {
+          this.$store.dispatch('clearError')
+        }
+      },
+      ...mapGetters([
+        'courses', 'loading'
+      ])
     }
   }
 </script>
