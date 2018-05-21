@@ -1,6 +1,6 @@
-import coursesApi from '../../api/courses'
+import teetimesApi from '../../api/teetimes'
 const state = {
-  courses: [],
+  teetimes: [],
   status: {
     loading: false,
     success: false,
@@ -14,15 +14,15 @@ const state = {
 }
 
 const getters = {
-  courses: state => state.courses,
+  teetimes: state => state.teetimes,
   loading: state => state.status.loading,
   modal: state => state.modal,
   detail: state => state.detail
 }
 
 const mutations = {
-  SET_COURSES (state, payload) {
-    state.courses = payload
+  SET_TEETIMES (state, payload) {
+    state.teetimes = payload
   },
   LOADING (state) {
     state.status = {
@@ -60,10 +60,10 @@ const mutations = {
   }
 }
 const actions = {
-  getCourses (context) {
+  getTeetimes (context) {
     context.commit('LOADING')
-    coursesApi.getAllCourses(courses => {
-      context.commit('SET_COURSES', courses || [])
+    teetimesApi.getAllTeetimes(teetimes => {
+      context.commit('SET_TEETIMES', teetimes || [])
       context.commit('SUCCESS')
     })
   },

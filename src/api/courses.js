@@ -1,3 +1,7 @@
+/**
+ * Mocking API for ui development
+ * will replace with real api calls
+ */
 const courses = [
   {
     date: new Date('2018/05/11'),

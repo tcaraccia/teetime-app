@@ -1,11 +1,11 @@
 <template>
   <v-container fluid grid-list-md>
     <div v-if="loading">
-       <h1 class="grey--text pt-4 pb-4 display-2 text-xs-center" flat>Cargando Canchas </h1>
+       <h1 class="grey--text pt-4 pb-4 display-2 text-xs-center" flat>Cargando... </h1>
       <v-progress-linear slot="progress" color="green" indeterminate></v-progress-linear>
     </div>
-    <div v-for="result in courses" :key="result.date.toString()">
-      <h1 class="grey--text pt-4 pb-4 display-2 text-xs-center" flat color="green" v-text="moment(result.date).locale('es').format('dddd DD [de] MMMM')" ></h1>
+    <div v-for="(result, index) in courses" :key="index">
+      <h1 class="grey--text pt-4 pb-4 display-2 text-xs-center" flat v-text="localizeDate(result.date)" ></h1>
       <v-divider class="mb-3"></v-divider>
       <v-slide-y-transition mode="out-in">
         <v-layout row wrap>
@@ -21,7 +21,7 @@
 <script>
   import CourseItem from './CourseItem.vue'
   import { mapGetters } from 'vuex'
-
+  import moment from 'moment'
   export default {
     components: {
       'course': CourseItem
@@ -46,6 +46,9 @@
       ...mapGetters([
         'courses', 'loading'
       ])
+    },
+    methods: {
+      localizeDate: (date) => moment(date).locale('es').format('dddd DD [de] MMMM')
     }
   }
 </script>
