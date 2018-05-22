@@ -7,7 +7,8 @@ const state = {
     error: false
   },
   selected: {
-    id: null
+    id: null,
+    date: new Date()
   },
   modal: false,
   detail: false

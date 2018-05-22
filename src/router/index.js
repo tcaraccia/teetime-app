@@ -18,7 +18,7 @@ export default new Router({
     },
     {
       path: '/courses',
-      name: 'courselist',
+      name: 'courses',
       component: CourseList,
       props: {
         bread: 'CourseList'
