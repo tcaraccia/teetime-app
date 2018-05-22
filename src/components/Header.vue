@@ -45,7 +45,6 @@ export default {
     ...mapGetters(['drawer']),
     sidebar: {
       get () {
-        console.log(this.drawer)
         return this.drawer
       },
       set (state) {

@@ -1,4 +1,5 @@
-import coursesApi from '../../api/courses'
+import axios from 'axios'
+
 const state = {
   courses: [],
   status: {
@@ -19,7 +20,8 @@ const getters = {
   loading: state => state.status.loading,
   modal: state => state.modal,
   detail: state => state.detail,
-  selected: state => state.selected
+  selected: state => state.selected,
+  status: state => state.status
 }
 
 const mutations = {
@@ -76,9 +78,12 @@ const mutations = {
 const actions = {
   getCourses (context) {
     context.commit('LOADING')
-    coursesApi.getAllCourses(courses => {
-      context.commit('SET_COURSES', courses || [])
+    axios.get(process.env.API_BASE_URL + '/courses').then(results => {
       context.commit('SUCCESS')
+      context.commit('SET_COURSES', [{date: new Date(), courses: results.data}])
+    })
+    .catch(e => {
+      context.commit('ERROR', e)
     })
   },
   clearError: context => context.commit('CLEAR_ERROR'),

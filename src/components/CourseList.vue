@@ -9,7 +9,7 @@
       <v-divider class="mb-3"></v-divider>
       <v-slide-y-transition mode="out-in">
         <v-layout row wrap>
-          <v-flex xs12 sm6 lg3 pl-3 pb-3 v-for="course in result.courses" v-bind="{ [`xs${course.flex}`]: true }" :key="course.id">
+          <v-flex xs12 sm6 lg3 pl-3 pb-3 v-for="course in result.courses"  :key="course._id">
             <course v-bind:course="course"></course>
           </v-flex>
         </v-layout>
@@ -29,7 +29,7 @@
     computed: {
       success: {
         get: function () {
-          return this.$store.state.status.success
+          return this.status.success
         },
         set: function (value) {
           this.$store.dispatch('clearError')
@@ -37,14 +37,14 @@
       },
       error: {
         get: function () {
-          return this.$store.state.status.error
+          return this.status.error
         },
         set: function (value) {
           this.$store.dispatch('clearError')
         }
       },
       ...mapGetters([
-        'courses', 'loading'
+        'courses', 'loading', 'status'
       ])
     },
     methods: {
