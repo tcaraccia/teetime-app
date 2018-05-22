@@ -63,8 +63,18 @@ const mutations = {
   },
   TOGGLE_DETAIL (state, payload) {
     state.modal = false
-    state.selected.id = (state.detail) ? null : payload
-    state.detail = !state.detail
+    if (state.selected.id) {
+      if (payload === state.selected.id) {
+        state.detail = false
+        state.selected.id = null
+      } else {
+        state.selected.id = payload
+        state.detail = true
+      }
+    } else {
+      state.selected.id = (state.detail) ? null : payload
+      state.detail = !state.detail
+    }
   }
 }
 const actions = {
