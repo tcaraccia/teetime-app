@@ -64,13 +64,8 @@ const mutations = {
   TOGGLE_DETAIL (state, payload) {
     state.modal = false
     if (state.selected.id) {
-      if (payload === state.selected.id) {
-        state.detail = false
-        state.selected.id = null
-      } else {
-        state.selected.id = payload
-        state.detail = true
-      }
+      state.detail = (payload !== state.selected.id)
+      state.selected.id = (payload !== state.selected.id) ? payload : null
     } else {
       state.selected.id = (state.detail) ? null : payload
       state.detail = !state.detail
