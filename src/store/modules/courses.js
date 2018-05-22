@@ -6,7 +6,7 @@ const state = {
     success: false,
     error: false
   },
-  course: {
+  selected: {
     id: null
   },
   modal: false,
@@ -17,12 +17,16 @@ const getters = {
   courses: state => state.courses,
   loading: state => state.status.loading,
   modal: state => state.modal,
-  detail: state => state.detail
+  detail: state => state.detail,
+  selected: state => state.selected
 }
 
 const mutations = {
   SET_COURSES (state, payload) {
     state.courses = payload
+  },
+  SET_COURSE (state, payload) {
+    state.selected = payload
   },
   LOADING (state) {
     state.status = {
@@ -52,11 +56,15 @@ const mutations = {
       error: false
     }
   },
-  TOGGLE_MODAL (state) {
+  TOGGLE_MODAL (state, payload) {
+    state.detail = false
+    state.selected.id = (state.modal) ? null : payload
     state.modal = !state.modal
   },
-  TOGGLE_DIALOG (state) {
-    state.dialog = !state.dialog
+  TOGGLE_DETAIL (state, payload) {
+    state.modal = false
+    state.selected.id = (state.detail) ? null : payload
+    state.detail = !state.detail
   }
 }
 const actions = {
@@ -68,8 +76,8 @@ const actions = {
     })
   },
   clearError: context => context.commit('CLEAR_ERROR'),
-  toggleModal: context => context.commit('TOGGLE_MODAL'),
-  toggleDialog: context => context.commit('TOGGLE_DIALOG')
+  toggleModal: (context, payload) => context.commit('TOGGLE_MODAL', payload),
+  toggleDetail: (context, payload) => context.commit('TOGGLE_DETAIL', payload)
 }
 export default {
   state,

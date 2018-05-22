@@ -10,7 +10,7 @@
       <v-slide-y-transition mode="out-in">
         <v-layout row wrap>
           <v-flex xs12 sm6 lg3 pl-3 pb-3 v-for="course in result.courses" v-bind="{ [`xs${course.flex}`]: true }" :key="course.id">
-            <course v-bind:card="course"></course>
+            <course v-bind:course="course"></course>
           </v-flex>
         </v-layout>
       </v-slide-y-transition>
