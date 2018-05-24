@@ -6,7 +6,7 @@ const teetimes = [
   {
     time: '8:00',
     fee: 500,
-    player4: {
+    player1: {
       alias: 'Leticia D',
       enrolment: '97577',
       gender: 'F',
@@ -78,7 +78,7 @@ const teetimes = [
 ]
 
 export default {
-  getTeetimes (cb) {
-    setTimeout(() => cb(teetimes), 2000)
+  getAllTeetimes () {
+    return teetimes
   }
 }

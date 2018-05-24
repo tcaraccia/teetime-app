@@ -1,123 +1,51 @@
 <template>
-  <v-data-table
-    :headers="headers"
-    :items="teetimes"
-    :loading="true"
-    hide-actions
-    class="text-xs-left elevation-1"
-  >
-    <v-progress-linear slot="progress" color="green" indeterminate></v-progress-linear>
-    <template slot="items" slot-scope="props">
-      <td class="body-2">{{ props.item.time }}</td>
-      <td class="body-2">$ {{ props.item.fee }}</td>
-      <td class="text-xs-center">
-        <v-edit-dialog 
-        :return-value.sync="props.item.player1" 
-        large
-        persistent
-        lazy
-        >
-          <v-chip v-if="props.item.player1" class="body-2" v-bind="playerChip(props.item.player1)" >
-            <v-avatar size="20px" v-bind="playerAvatar(props.item.player1)">{{ props.item.player1.handicap}}</v-avatar>
-            {{ props.item.player1.alias || null }}
-          </v-chip >
-          <div v-else>
-            <div class="green--text">Disponible</div>
-          </div>
-          <v-text-field
-          slot="input"
-          v-model="props.item.player1"
-          label="Nro Matricula"
-          single-line
-          autofocus
-          >
-          </v-text-field>
-        </v-edit-dialog>
-      </td>
-      <td class="text-xs-center">
-        <v-edit-dialog 
-        :return-value.sync="props.item.player2" 
-        large
-        persistent
-        lazy
-        >
-          <v-chip v-if="props.item.player2" class="body-2" v-bind="playerChip(props.item.player2)">
-            <v-avatar size="20px" v-bind="playerAvatar(props.item.player2)">{{ props.item.player2.handicap}}</v-avatar>
-            {{ props.item.player2.alias }}
-          </v-chip >
-          <div v-else>
-            <div class="green--text">Disponible</div>
-          </div>
-          <v-text-field
-          slot="input"
-          v-model="props.item.player2"
-          label="Nro Matricula"
-          single-line
-          autofocus
-          >
-          </v-text-field>
-        </v-edit-dialog>
-      </td>
-      <td class="text-xs-center">
-        <v-edit-dialog 
-        :return-value.sync="props.item.player3"
-          large
-          persistent
-          lazy
-        >
-          <v-chip v-if="props.item.player3" class="body-2" v-bind="playerChip(props.item.player3)">
-            <v-avatar size="20px" v-bind="playerAvatar(props.item.player3)">{{ props.item.player3.handicap}}</v-avatar>
-            {{ props.item.player4.alias }}
-          </v-chip >
-          <div v-else>
-            <div class="green--text">Disponible</div>
-          </div>
-          <v-text-field
-          slot="input"
-          v-model="props.item.player3"
-          label="Nro Matricula"
-          single-line
-          autofocus
-          >
-          </v-text-field>
-        </v-edit-dialog>
-      </td>
-      <td  class="text-xs-center">
-        <v-edit-dialog 
-        :return-value.sync="props.item.player4" 
-        large
-        persistent
-        lazy
-        > 
-        
-          
-          <v-chip v-if="props.item.player4" class="body-2" v-bind="playerChip(props.item.player4)">
-            <v-avatar size="20px" v-bind="playerAvatar(props.item.player4)">{{ props.item.player4.handicap}}</v-avatar>
-            {{ props.item.player4.alias }}
-          </v-chip >
-          <div v-else>
-            <div class="green--text">Disponible</div>
-          </div>
-
-          <v-text-field
-          slot="input"
-          v-model="props.item.player4"
-          label="Nro Matricula"
-          single-line
-          autofocus
-          >
-          </v-text-field>
-        </v-edit-dialog>
-      </td>
-    </template>
-  </v-data-table>
+      <v-data-table
+        :headers="headers"
+        :items="teetimes"
+        :loading="loading"
+        hide-actions
+        class="text-xs-left elevation-2"
+      >
+        <template slot="items" slot-scope="props">
+          <td class="body-2">{{ props.item.time }}</td>
+          <td class="body-2">{{ props.item.fee }}</td>
+          <td class="text-xs-center">
+            <v-edit-dialog 
+            :return-value.sync="selected" 
+            large
+            persistent
+            lazy
+            >
+              <v-chip v-if="props.item.player1" class="body-2" v-bind="playerChip(props.item.player1)" >
+                <v-avatar size="20px" v-bind="playerAvatar(props.item.player1)">{{ props.item.player1.handicap}}</v-avatar>
+                {{ props.item.player1.alias || null }}
+              </v-chip >
+              <div v-else>
+                <v-btn icon class="mx-0" @click="openBooking(props.item)">
+                  <v-icon color="teal">edit</v-icon>
+                </v-btn>
+              </div>
+              <div slot="input" class="mt-3 title">Salida {{props.item.time }} </div>
+              <v-text-field
+              slot="input"
+              v-model="selected"
+              label="Nro Matricula"
+              single-line
+              autofocus
+              >
+              </v-text-field>
+            </v-edit-dialog>
+        </td>
+        </template>
+      </v-data-table>
 </template>
 
 <script>
+  import { createNamespacedHelpers } from 'vuex'
+  const { mapGetters, mapActions } = createNamespacedHelpers('teetimes')
   export default {
-    props: ['card'],
     data: () => ({
-      free: false,
+      selected: null,
       headers: [
         { text: 'Hora', value: 'time' },
         { text: 'Fee', value: 'fee', sortable: true, align: 'left' },
@@ -125,95 +53,23 @@
         { text: 'Jugador 2', value: 'player2', sortable: false, align: 'center' },
         { text: 'Jugador 3', value: 'player3', sortable: false, align: 'center' },
         { text: 'Jugador 4', value: 'player4', sortable: false, align: 'center' }
-
-      ],
-      teetimes: [],
-      editedIndex: -1,
-      editedItem: {
-        name: '',
-        player1: {
-          fullname: 'Tomas Caraccia',
-          enrolment: ''
-        },
-        player2: {
-          fullname: 'Tomas Caraccia',
-          enrolment: ''
-        },
-        player3: {
-          fullname: 'Tomas Caraccia',
-          enrolment: ''
-        },
-        player4: {
-          fullname: 'Tomas Caraccia',
-          enrolment: ''
-        }
-      },
-      defaultItem: {
-        time: '9:00',
-        fee: 350,
-        player1: {
-          enrolment: 999999,
-          fullname: 'Default',
-          gender: 'M'
-        },
-        player2: {
-          enrolment: 999999,
-          fullname: 'Default',
-          gender: 'M'
-        },
-        player3: {
-          enrolment: 999999,
-          fullname: 'Default',
-          gender: 'M'
-        },
-        player4: {
-          enrolment: 999999,
-          fullname: 'Default',
-          gender: 'M'
-        }
-      }
+      ]
     }),
     computed: {
-      checkSlot () {
-        console.log(this)
-        return true
-      },
-      formTitle () {
-        return this.editedIndex === -1 ? 'New Item' : 'Edit Item'
-      }
-    },
-    watch: {
-      dialog (val) {
-        val || this.close()
-      }
+      ...mapGetters([
+        'teetimes', 'loading'
+      ])
     },
     created () {
-      this.initialize()
+      this.getTeetimes()
     },
     methods: {
-      editItem (item) {
-        this.editedIndex = this.teetimes.indexOf(item)
-        this.editedItem = Object.assign({}, item)
-        this.dialog = true
-      },
-      deleteItem (item) {
-        const index = this.desserts.indexOf(item)
-        confirm('Are you sure you want to delete this item?') && this.desserts.splice(index, 1)
-      },
-      close () {
-        this.dialog = false
-        setTimeout(() => {
-          this.editedItem = Object.assign({}, this.defaultItem)
-          this.editedIndex = -1
-        }, 300)
-      },
-      save () {
-        if (this.editedIndex > -1) {
-          Object.assign(this.desserts[this.editedIndex], this.editedItem)
-        } else {
-          this.desserts.push(this.editedItem)
-        }
-        this.close()
+      ...mapActions([
+        'getTeetimes',
+        'bookTeetime'
+      ]),
+      openBooking (teetime) {
+        this.bookTeetime(teetime)
       },
       playerAvatar: (player) => {
         return {
