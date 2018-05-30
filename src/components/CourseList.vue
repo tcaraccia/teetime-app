@@ -4,13 +4,13 @@
        <h1 class="grey--text pt-4 pb-4 display-2 text-xs-center" flat>Cargando... </h1>
       <v-progress-linear slot="progress" color="green" indeterminate></v-progress-linear>
     </div>
-    <div v-for="(result, index) in courses" :key="index">
-      <h1 class="grey--text pt-4 pb-4 display-2 text-xs-center" flat v-text="localizeDate(result.date)" ></h1>
+    <div v-for="day in dates" :key="day.toJSON()">
+      <h1 class="grey--text pt-4 pb-4 display-2 text-xs-center" flat v-text="localizeDate(day)" ></h1>
       <v-divider class="mb-3"></v-divider>
       <v-slide-y-transition mode="out-in">
         <v-layout row wrap>
-          <v-flex xs12 sm6 lg3 pl-3 pb-3 v-for="course in result.courses"  :key="course._id">
-            <course v-bind:course="course"></course>
+          <v-flex xs12 sm6 lg3 pl-3 pb-3 v-for="course in courses" :key="course._id">
+            <course v-bind:course="course" v-bind:day="day" ></course>
           </v-flex>
         </v-layout>
       </v-slide-y-transition>
@@ -44,7 +44,7 @@
         }
       },
       ...mapGetters([
-        'courses', 'loading', 'status'
+        'courses', 'loading', 'status', 'dates'
       ])
     },
     methods: {

@@ -4,7 +4,7 @@ const namespaced = true
 
 const state = {
   teetimes: [],
-  selected: null,
+  teetime: null,
   status: {
     loading: false,
     success: false,
@@ -63,9 +63,16 @@ const mutations = {
 const actions = {
   getTeetimes (context) {
     context.commit('LOADING')
-    const teetimes = teetimesApi.getAllTeetimes()
-    context.commit('SET_TEETIMES', teetimes)
-    context.commit('SUCCESS')
+    teetimesApi.teetimesForCourse({
+      courseId: context.rootState.courses.selected.course,
+      date: context.rootState.courses.selected.date
+    }).then(results => {
+      context.commit('SUCCESS')
+      context.commit('SET_TEETIMES', results.data)
+    })
+    .catch(e => {
+      context.commit('ERROR', e)
+    })
   },
   bookTeetime (context, payload) {
     context.commit('BOOKING')

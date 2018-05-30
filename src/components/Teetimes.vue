@@ -44,6 +44,7 @@
   import { createNamespacedHelpers } from 'vuex'
   const { mapGetters, mapActions } = createNamespacedHelpers('teetimes')
   export default {
+    props: ['courseId', 'day'],
     data: () => ({
       selected: null,
       headers: [
@@ -59,9 +60,6 @@
       ...mapGetters([
         'teetimes', 'loading'
       ])
-    },
-    created () {
-      this.getTeetimes()
     },
     methods: {
       ...mapActions([

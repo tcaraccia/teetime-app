@@ -1,5 +1,4 @@
-import axios from 'axios'
-
+import courseApi from '../../api/courses'
 const state = {
   courses: [],
   status: {
@@ -7,10 +6,7 @@ const state = {
     success: false,
     error: false
   },
-  selected: {
-    id: null,
-    date: new Date()
-  },
+  selected: {},
   modal: false,
   detail: false
 }
@@ -21,7 +17,8 @@ const getters = {
   modal: state => state.modal,
   detail: state => state.detail,
   selected: state => state.selected,
-  status: state => state.status
+  status: state => state.status,
+  dates: (state, getters, rootState, rootGetters) => Array.from(rootGetters.daterange.by('day'))
 }
 
 const mutations = {
@@ -29,6 +26,12 @@ const mutations = {
     state.courses = payload
   },
   SET_COURSE (state, payload) {
+    state.selected = payload
+  },
+  SET_TEETIMES (state, payload) {
+    state.teetimes = payload
+  },
+  UNSET_COURSE (state, payload) {
     state.selected = payload
   },
   LOADING (state) {
@@ -59,36 +62,40 @@ const mutations = {
       error: false
     }
   },
-  TOGGLE_MODAL (state, payload) {
+  TOGGLE_MODAL (state) {
     state.detail = false
-    state.selected.id = (state.modal) ? null : payload
     state.modal = !state.modal
   },
   TOGGLE_DETAIL (state, payload) {
     state.modal = false
-    if (state.selected.id) {
-      state.detail = (payload !== state.selected.id)
-      state.selected.id = (payload !== state.selected.id) ? payload : null
-    } else {
-      state.selected.id = (state.detail) ? null : payload
-      state.detail = !state.detail
-    }
+    state.detail = !state.detail
   }
 }
 const actions = {
   getCourses (context) {
     context.commit('LOADING')
-    axios.get(process.env.API_BASE_URL + '/courses').then(results => {
+    courseApi.courses().then(results => {
       context.commit('SUCCESS')
-      context.commit('SET_COURSES', [{date: new Date(), courses: results.data}])
+      context.commit('SET_COURSES', results.data)
     })
-    .catch(e => {
-      context.commit('ERROR', e)
-    })
+      .catch(e => {
+        context.commit('ERROR', e)
+      })
   },
   clearError: context => context.commit('CLEAR_ERROR'),
-  toggleModal: (context, payload) => context.commit('TOGGLE_MODAL', payload),
-  toggleDetail: (context, payload) => context.commit('TOGGLE_DETAIL', payload)
+  toggleDetail: (context, payload) => {
+    const action = (context.state.detail) ? 'UNSET_COURSE' : 'SET_COURSE'
+    context.commit(action, payload)
+    context.commit('TOGGLE_DETAIL', payload)
+  },
+  toggleModal: (context, payload) => {
+    const action = (context.state.modal) ? 'UNSET_COURSE' : 'SET_COURSE'
+    context.commit(action, payload)
+    context.commit('TOGGLE_MODAL', payload)
+    if (action === 'SET_COURSE') {
+      context.dispatch('teetimes/getTeetimes', payload)
+    }
+  }
 }
 export default {
   state,
