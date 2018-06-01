@@ -1,15 +1,19 @@
 import Moment from 'moment'
 import { extendMoment } from 'moment-range'
+
 const moment = extendMoment(Moment)
 
 const state = {
   drawer: false,
-  dateRange: moment.range(moment().startOf('day'), moment().endOf('day').add(7, 'd'))
+  startdate: moment().startOf('day').toDate(),
+  enddate: moment().endOf('day').add(7, 'days').toDate()
 }
 
 const getters = {
   drawer: state => state.drawer,
-  daterange: state => state.dateRange
+  startdate: state => state.startdate,
+  enddate: state => state.enddate,
+  daterange: state => moment.range(state.startdate, state.enddate)
 }
 
 const mutations = {

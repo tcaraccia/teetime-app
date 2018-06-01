@@ -24,6 +24,11 @@ new Vue({
   components: { App },
   template: '<App/>',
   beforeMount: function () {
-    this.$store.dispatch('getCourses')
+    this.$store.dispatch('courses/getCourses')
+    this.$store.dispatch('teetimes/getTeetimes',
+      {
+        start: this.$store.state.root.startdate,
+        end: this.$store.state.root.enddate
+      })
   }
 })

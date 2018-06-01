@@ -13,12 +13,12 @@
     <v-card-actions>
         <v-btn flat color="green" @click.native="toggleModal({course: course._id, date: day})">Teetimes</v-btn>
         <v-spacer></v-spacer>
-        <v-btn icon @click.native="toggleDetail(course._id)">
-        <v-icon>{{ ((selected.course === course._id) && detail) ? 'keyboard_arrow_down' : 'keyboard_arrow_up' }}</v-icon>
+        <v-btn icon @click.native="toggleDetail({course: course._id, date:day})">
+        <v-icon>{{ ((selected.course === course._id && selected.date === day ) && detail) ? 'keyboard_arrow_down' : 'keyboard_arrow_up' }}</v-icon>
         </v-btn>
     </v-card-actions>
     <v-slide-y-transition>
-        <v-card-text v-show="(selected.course === course._id) && detail">
+        <v-card-text v-show="(selected.course === course._id && selected.date === day) && detail">
         I'm a thing. But, like most politicians, he promised more than he could deliver. You won't have time for sleeping, soldier, not with all the bed making you'll be doing. Then we'll go with that data file! Hey, you add a one and two zeros to that or we
         walk! You're going to do his laundry? I've got to find a way to escape.
         </v-card-text>
@@ -35,7 +35,9 @@
 
 <script>
 import Teetimes from './Teetimes'
-import { mapGetters, mapActions } from 'vuex'
+import { createNamespacedHelpers } from 'vuex'
+const { mapGetters, mapActions } = createNamespacedHelpers('courses')
+
 export default {
   components: {
     'teetimes': Teetimes
@@ -47,7 +49,7 @@ export default {
     ]),
     showmodal: {
       get () {
-        return ((this.selected.course === this.course._id) && this.modal)
+        return ((this.selected.course === this.course._id && this.selected.date === this.day) && this.modal)
       },
       set (course) {
         this.toggleModal(course)
@@ -55,8 +57,8 @@ export default {
     }
   },
   methods: {
-    toggleDetail (id) {
-      this.toggleDetail(id)
+    toggleDetail (payload) {
+      this.toggleDetail(payload)
     },
     toggleModal (payload) {
       this.toggleModal(payload)

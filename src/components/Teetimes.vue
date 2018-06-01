@@ -57,9 +57,13 @@
       ]
     }),
     computed: {
-      ...mapGetters([
-        'teetimes', 'loading'
-      ])
+      ...mapGetters({
+        teetimes: 'all',
+        loading: 'loading',
+        status: 'status',
+        dates: 'dates',
+        selected: 'selected'
+      })
     },
     methods: {
       ...mapActions([

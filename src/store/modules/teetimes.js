@@ -3,8 +3,8 @@ import _ from 'lodash'
 const namespaced = true
 
 const state = {
-  teetimes: [],
-  teetime: null,
+  all: [],
+  selected: null,
   status: {
     loading: false,
     success: false,
@@ -14,7 +14,7 @@ const state = {
 }
 
 const getters = {
-  teetimes: state => state.teetimes,
+  all: state => state.all,
   loading: state => state.status.loading,
   selected: state => state.selected,
   status: state => state.status
@@ -22,7 +22,7 @@ const getters = {
 
 const mutations = {
   SET_TEETIMES (state, payload) {
-    state.teetimes = payload
+    state.all = payload
   },
   SET_TEETIME (state, payload) {
     state.selected = payload
@@ -61,11 +61,12 @@ const mutations = {
   }
 }
 const actions = {
-  getTeetimes (context) {
+  getTeetimes (context, payload) {
+    console.log(payload)
     context.commit('LOADING')
-    teetimesApi.teetimesForCourse({
-      courseId: context.rootState.courses.selected.course,
-      date: context.rootState.courses.selected.date
+    teetimesApi.teetimesBetweenDates({
+      startDate: payload.start,
+      endDate: payload.end
     }).then(results => {
       context.commit('SUCCESS')
       context.commit('SET_TEETIMES', results.data)
@@ -73,6 +74,12 @@ const actions = {
     .catch(e => {
       context.commit('ERROR', e)
     })
+  },
+  setTeetime (context, payload) {
+    const teetime = this.state.teetimes.all.filter(x =>
+      x.courseId === payload.course &&
+      x.date === payload.date)
+    context.commit('SET_TEETIME', teetime || { course: payload.course, date: payload.date })
   },
   bookTeetime (context, payload) {
     context.commit('BOOKING')

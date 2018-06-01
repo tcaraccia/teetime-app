@@ -1,6 +1,8 @@
 import courseApi from '../../api/courses'
+const namespaced = true
+
 const state = {
-  courses: [],
+  all: [],
   status: {
     loading: false,
     success: false,
@@ -12,7 +14,7 @@ const state = {
 }
 
 const getters = {
-  courses: state => state.courses,
+  all: state => state.all,
   loading: state => state.status.loading,
   modal: state => state.modal,
   detail: state => state.detail,
@@ -23,13 +25,10 @@ const getters = {
 
 const mutations = {
   SET_COURSES (state, payload) {
-    state.courses = payload
+    state.all = payload
   },
   SET_COURSE (state, payload) {
     state.selected = payload
-  },
-  SET_TEETIMES (state, payload) {
-    state.teetimes = payload
   },
   UNSET_COURSE (state, payload) {
     state.selected = payload
@@ -93,11 +92,12 @@ const actions = {
     context.commit(action, payload)
     context.commit('TOGGLE_MODAL', payload)
     if (action === 'SET_COURSE') {
-      context.dispatch('teetimes/getTeetimes', payload)
+      context.dispatch('teetimes/setTeetime', payload, {root: true})
     }
   }
 }
 export default {
+  namespaced,
   state,
   getters,
   actions,
