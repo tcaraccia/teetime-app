@@ -88,12 +88,16 @@ const actions = {
     context.commit('TOGGLE_DETAIL', payload)
   },
   toggleModal: (context, payload) => {
+    const startTime = performance.now()
+
     const action = (context.state.modal) ? 'UNSET_COURSE' : 'SET_COURSE'
     context.commit(action, payload)
-    context.commit('TOGGLE_MODAL', payload)
     if (action === 'SET_COURSE') {
       context.dispatch('teetimes/setTeetime', payload, {root: true})
+      const duration = performance.now() - startTime
+      console.log(`toggleModal took ${duration}ms`)
     }
+    context.commit('TOGGLE_MODAL', payload)
   }
 }
 export default {

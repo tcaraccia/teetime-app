@@ -27,6 +27,9 @@ const mutations = {
   SET_TEETIME (state, payload) {
     state.selected = payload
   },
+  PUSH_NEW_TEETIME (state, payload) {
+    state.all.push(payload)
+  },
   BOOKING (state) {
     state.status = {
       loading: false,
@@ -62,7 +65,6 @@ const mutations = {
 }
 const actions = {
   getTeetimes (context, payload) {
-    console.log(payload)
     context.commit('LOADING')
     teetimesApi.teetimesBetweenDates({
       startDate: payload.start,
@@ -76,10 +78,27 @@ const actions = {
     })
   },
   setTeetime (context, payload) {
-    const teetime = this.state.teetimes.all.filter(x =>
-      x.courseId === payload.course &&
-      x.date === payload.date)
-    context.commit('SET_TEETIME', teetime || { course: payload.course, date: payload.date })
+    // TODO: Switch to Promisified as in https://stackoverflow.com/questions/40165766/returning-promises-from-vuex-actions
+    const selectedCourse = this.state.courses.all.find(x => x._id === payload.course)
+    const selectedTeetime = this.state.teetimes.all.find(x =>
+      x.course === payload.course &&
+      x.date === payload.date.toJSON())
+    if (selectedTeetime) {
+      context.commit('SET_TEETIME', selectedTeetime)
+    } else {
+      context.commit('LOADING')
+      teetimesApi.createTeetime({
+        course: selectedCourse,
+        date: payload.date
+      }).then(result => {
+        context.commit('PUSH_NEW_TEETIME', result.data)
+        context.commit('SET_TEETIME', result.data)
+        context.commit('SUCCESS')
+      })
+      .catch(e => {
+        context.commit('ERROR', e)
+      })
+    }
   },
   bookTeetime (context, payload) {
     context.commit('BOOKING')

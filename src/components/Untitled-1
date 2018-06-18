@@ -1,0 +1,27 @@
+ <td class="text-xs-center">
+            <v-edit-dialog 
+            :return-value.sync="selected" 
+            large
+            persistent
+            lazy
+            >
+              <v-chip v-if="props.item.player1" class="body-2" v-bind="playerChip(props.item.player1)" >
+                <v-avatar size="20px" v-bind="playerAvatar(props.item.player1)">{{ props.item.player1.handicap}}</v-avatar>
+                {{ props.item.player1.alias || null }}
+              </v-chip >
+              <div v-else>
+                <v-btn icon class="mx-0" @click="openBooking(props.item)">
+                  <v-icon color="teal">edit</v-icon>
+                </v-btn>
+              </div>
+              <div slot="input" class="mt-3 title">Salida {{props.item.time }} </div>
+              <v-text-field
+              slot="input"
+              v-model="selected"
+              label="Nro Matricula"
+              single-line
+              autofocus
+              >
+              </v-text-field>
+            </v-edit-dialog>
+        </td>

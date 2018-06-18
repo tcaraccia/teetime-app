@@ -23,11 +23,12 @@
         walk! You're going to do his laundry? I've got to find a way to escape.
         </v-card-text>
     </v-slide-y-transition>
-    <v-dialog 
+    <v-dialog
+      lazy 
       hide-overlay
       v-model="showmodal" 
       max-width="800px">
-      <teetimes v-bind:courseId="selected.course" v-bind:day="day"></teetimes>
+      <teetimes v-bind:courseId="selected.course" v-bind:day="day" ></teetimes>
     </v-dialog>
   </v-card>
     

@@ -6,5 +6,9 @@ export default {
       start: dateRange.startDate,
       end: dateRange.endDate
     }
+  }),
+  createTeetime: (payload) => axios.post(process.env.API_BASE_URL + '/teetimes', {
+    course: payload.course,
+    date: payload.date
   })
 }
