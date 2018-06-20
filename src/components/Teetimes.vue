@@ -10,7 +10,18 @@
           <td class='body-2'>{{ moment(props.item.time).format('HH:mm') || '?' }}</td>
           <td class='body-2'>$ {{ props.item.fee || '?' }}</td>
           <td v-for='player in props.item.players' :key='player'>
-            {{ (!player) ? 'Available': player }}
+            <span v-if="player"> NOT AVAILABLE</span>
+            <v-text-field v-else
+              slot="input"
+              placeholder="matricula nro"
+              flat
+              solo
+              single-line
+              autofocus
+              light
+              small
+              >
+          </v-text-field>
           </td>
         </template>
       </v-data-table>

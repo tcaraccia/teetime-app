@@ -27,7 +27,7 @@
       lazy 
       hide-overlay
       v-model="showmodal" 
-      max-width="800px">
+      max-width="900px">
       <teetimes v-bind:courseId="selected.course" v-bind:day="day" ></teetimes>
     </v-dialog>
   </v-card>
